@@ -1,0 +1,38 @@
+name: Deploy NGINX Configuration
+
+on:
+  push:
+    branches:
+      - prod
+    paths:
+      - "conf.d/**"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, linux, x64]
+
+    steps:
+    - name: Check out the repository
+      uses: actions/checkout@v2
+
+    - name: Create SSH private key file
+      run: |
+        echo "${{ secrets.REMOTE_SSH_PRVKEY }}" > priv.key
+        chmod 600 priv.key
+
+    - name: Transfer NGINX Conf file with SCP
+      run: |
+        scp -i priv.key conf.d/test.conf ${{ secrets.REMOTE_SSH_USERNAME }}@${{ secrets.REMOTE_SSH_HOST }}:/etc/nginx/conf.d/
+
+    - name: Test NGINX configuration
+      run: |
+        ssh -i priv.key -o StrictHostKeyChecking=no ${{ secrets.REMOTE_SSH_USERNAME }}@${{ secrets.REMOTE_SSH_HOST }} 'nginx -t' || { echo -e "\033[31mNGINX configuration test failed!\033[0m"; exit 1; }
+
+    - name: NGINX Reload
+      if: success()
+      run: |
+        ssh -i priv.key -o StrictHostKeyChecking=no ${{ secrets.REMOTE_SSH_USERNAME }}@${{ secrets.REMOTE_SSH_HOST }} 'nginx -s reload'
+
+    - name: Clean up private key file
+      run: rm priv.key
