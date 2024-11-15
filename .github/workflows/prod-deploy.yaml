@@ -6,6 +6,7 @@ on:
       - prod
     paths:
       - "conf.d/**"
+      - "nginx.conf"
   workflow_dispatch:
 
 jobs:
@@ -24,6 +25,7 @@ jobs:
     - name: Transfer NGINX Conf file with SCP
       run: |
         scp -i priv.key conf.d/test.conf ${{ secrets.REMOTE_SSH_USERNAME }}@${{ secrets.REMOTE_SSH_HOST }}:/etc/nginx/conf.d/
+        scp -i priv.key nginx.conf ${{ secrets.REMOTE_SSH_USERNAME }}@${{ secrets.REMOTE_SSH_HOST }}:/etc/nginx/nginx.conf
 
     - name: Test NGINX configuration
       run: |
