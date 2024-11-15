@@ -4,8 +4,7 @@ on:
   push:
     branches:
       - prod
-    paths:
-      - "conf.d/**"
+      
   workflow_dispatch:
 
 jobs:
