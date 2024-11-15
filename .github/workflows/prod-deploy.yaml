@@ -23,7 +23,8 @@ jobs:
 
     - name: Transfer NGINX Conf file with SCP
       run: |
-        scp -i priv.key conf.d/test.conf ${{ secrets.REMOTE_SSH_USERNAME }}@${{ secrets.REMOTE_SSH_HOST }}:/etc/nginx/conf.d/
+        scp -i priv.key *.conf ${{ secrets.REMOTE_SSH_USERNAME }}@${{ secrets.REMOTE_SSH_HOST }}:/etc/nginx/
+        scp -i priv.key conf.d/*.conf ${{ secrets.REMOTE_SSH_USERNAME }}@${{ secrets.REMOTE_SSH_HOST }}:/etc/nginx/conf.d/
 
     - name: Test NGINX configuration
       run: |
