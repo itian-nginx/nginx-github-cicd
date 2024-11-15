@@ -7,7 +7,7 @@ on:
     paths:
       - "nginx.conf"
       - "conf.d/**"
-  
+
   workflow_dispatch:
 
 jobs:
