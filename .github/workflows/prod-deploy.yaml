@@ -5,9 +5,9 @@ on:
     branches:
       - prod
     paths:
-      - nginx.conf
-      - conf.d/**
-      
+      - "nginx.conf"
+      - "conf.d/**"
+  
   workflow_dispatch:
 
 jobs:
