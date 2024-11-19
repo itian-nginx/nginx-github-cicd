@@ -16,7 +16,7 @@ jobs:
 
     steps:
     - name: Check out the repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Create SSH private key file
       run: |
@@ -37,4 +37,5 @@ jobs:
         ssh -i priv.key -o StrictHostKeyChecking=no ${{ secrets.REMOTE_SSH_USERNAME }}@${{ secrets.REMOTE_SSH_HOST }} 'nginx -s reload'
 
     - name: Clean up private key file
+      if: always()
       run: rm priv.key
