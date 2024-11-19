@@ -33,7 +33,6 @@ jobs:
         ssh -i priv.key -o StrictHostKeyChecking=no ${{ secrets.REMOTE_SSH_USERNAME }}@${{ secrets.REMOTE_SSH_HOST }} 'nginx -t' || { echo -e "\033[31mNGINX configuration test failed!\033[0m"; exit 1; }
 
     - name: NGINX Reload
-      if: success()
       run: |
         ssh -i priv.key -o StrictHostKeyChecking=no ${{ secrets.REMOTE_SSH_USERNAME }}@${{ secrets.REMOTE_SSH_HOST }} 'nginx -s reload'
 
